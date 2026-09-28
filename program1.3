@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+class ATMCardSecurity {
+private:
+ int pinCode;
+ int failedAttempts;
+ bool isCardLocked;
+public:
+ ATMCardSecurity(int initialPin) {
+ pinCode = initialPin;
+ failedAttempts = 0;
+ isCardLocked = false;
+ }
+ bool verifyPin(int enteredPin) {
+ if (isCardLocked) {
+ cout << "Card is blocked! Visit your branch." << endl;
+ return false;
+ }
+ if (enteredPin == pinCode) {
+ failedAttempts = 0;
+ cout << "Access Granted." << endl;
+ return true;
+ } else {
+ failedAttempts++;
+ cout << "Wrong PIN! Attempts: " << failedAttempts << "/3" << endl;
+ if (failedAttempts >= 3) {
+ isCardLocked = true;
+ cout << "Card locked due to multiple incorrect attempts." << endl;
+ }
+ return false;
+ }
+ }
+};
+int main() {
+ ATMCardSecurity card(4821);
+ card.verifyPin(1111);
+ card.verifyPin(4821);
+ return 0;
+}
